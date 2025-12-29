@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For You 💗</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  background:#fff0f3;
+  overflow:hidden;
+}
+
+/* Floating hearts */
+.heart{
+  position:fixed;
+  bottom:-20px;
+  color:#ff4d6d;
+  font-size:18px;
+  animation:float 6s linear infinite;
+}
+@keyframes float{
+  0%{transform:translateY(0);opacity:1;}
+  100%{transform:translateY(-100vh);opacity:0;}
+}
+
+/* Page container */
+.container{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:20px;
+}
+
+/* Shake animation */
+.shake{
+  animation:shake 0.4s;
+}
+@keyframes shake{
+  0%{transform:translateX(0);}
+  25%{transform:translateX(-6px);}
+  50%{transform:translateX(6px);}
+  75%{transform:translateX(-6px);}
+  100%{transform:translateX(0);}
+}
+
+.hidden{display:none;}
+
+button{
+  padding:12px 28px;
+  margin:10px;
+  border:none;
+  border-radius:30px;
+  font-size:16px;
+  cursor:pointer;
+}
+
+.yes{background:#ff4d6d;color:white;}
+.no{background:#ddd;}
+.try{background:#ff6f91;color:white;}
+.next{background:#ff4d6d;color:white;}
+
+.teddy{font-size:90px;}
+
+/* Envelope */
+.envelope{
+  font-size:90px;
+  animation:open 1.2s ease forwards;
+}
+@keyframes open{
+  from{transform:scale(0.5);}
+  to{transform:scale(1);}
+}
+
+/* Card */
+.card{
+  background:#fff;
+  border-radius:20px;
+  padding:30px;
+  max-width:420px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.15);
+}
+.card h1{color:#ff4d6d;}
+
+/* Photos */
+.photos{
+  display:flex;
+  gap:12px;
+  margin-top:15px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+.photos img{
+  width:110px;
+  height:140px;
+  object-fit:cover;
+  border-radius:15px;
+  box-shadow:0 6px 15px rgba(0,0,0,0.2);
+  animation:pop 0.6s ease;
+}
+@keyframes pop{
+  from{transform:scale(0.5);opacity:0;}
+  to{transform:scale(1);opacity:1;}
+}
+</style>
+</head>
+
+<body>
+
+<!-- Background Music -->
+<audio id="bgMusic" src="song.mp3" loop></audio>
+
+<!-- PAGE 1 -->
+<div class="container" id="page1">
+  <div class="teddy">🧸</div>
+  <h1>Please accept the gift 💗</h1>
+  <button class="yes" onclick="yesClick()">YES</button>
+  <button class="no" onclick="noClick()">NO</button>
+</div>
+
+<!-- PAGE 2 -->
+<div class="container hidden" id="page2">
+  <div class="teddy">😤🧸</div>
+  <h1>Why did you click no 😤</h1>
+  <button class="try" onclick="tryAgain()">Try again</button>
+</div>
+
+<!-- PAGE 3 -->
+<div class="container hidden" id="page3">
+  <div class="envelope">💌</div>
+  <h2>Opening something close to my heart…</h2>
+</div>
+
+<!-- PAGE 4 : PHOTOS -->
+<div class="container hidden" id="page4">
+  <div class="card">
+    <h1>Just us 📸</h1>
+    <div class="photos">
+      <img src="photo1.jpg">
+      <img src="photo2.jpg">
+      <img src="photo3.jpg">
+    </div>
+    <button class="next" onclick="nextPage()">Keep going 💗</button>
+  </div>
+</div>
+
+<!-- PAGE 5 : SORRY -->
+<div class="container hidden" id="page5">
+  <div class="card">
+    <h1>I’m sorry 🥺</h1>
+    <p>
+      I don’t have perfect words.  
+      I just know I hurt you,  
+      and that stays heavy with me.
+    </p>
+    <p>
+      I mess up sometimes.  
+      I feel deeply and don’t always show it right.  
+      But you — you’ve always mattered.
+    </p>
+    <p>
+      I’m sorry.  
+      Not loudly.  
+      Just honestly.
+    </p>
+    <button class="next" onclick="finalPage()">One last thing 💗</button>
+  </div>
+</div>
+
+<!-- PAGE 6 : FINAL -->
+<div class="container hidden" id="page6">
+  <div class="card">
+    <h1>🧸 For you</h1>
+    <h2>Pariiii 💗</h2>
+    <p>
+      You’re my comfort,  
+      my calm,  
+      and the place my heart keeps returning to.
+    </p>
+    <p>
+      This isn’t perfect —  
+      it’s just real.
+    </p>
+    <p style="margin-top:20px;font-weight:bold;">
+      Always yours, chazzi 🧸
+    </p>
+  </div>
+</div>
+
+<script>
+const music=document.getElementById("bgMusic");
+
+function vibrate(){ if(navigator.vibrate) navigator.vibrate(120); }
+function playMusic(){ if(music.paused) music.play().catch(()=>{}); }
+function shake(p){ p.classList.add("shake"); setTimeout(()=>p.classList.remove("shake"),400); }
+
+function yesClick(){
+  playMusic(); vibrate(); shake(page1);
+  page1.classList.add("hidden");
+  page3.classList.remove("hidden");
+  setTimeout(()=>{
+    page3.classList.add("hidden");
+    page4.classList.remove("hidden");
+  },1500);
+}
+function noClick(){ playMusic(); vibrate(); page1.classList.add("hidden"); page2.classList.remove("hidden"); }
+function tryAgain(){ vibrate(); page2.classList.add("hidden"); page1.classList.remove("hidden"); }
+function nextPage(){ vibrate(); page4.classList.add("hidden"); page5.classList.remove("hidden"); }
+function finalPage(){ vibrate(); page5.classList.add("hidden"); page6.classList.remove("hidden"); }
+
+/* Hearts */
+setInterval(()=>{
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML="💗";
+  h.style.left=Math.random()*100+"vw";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),6000);
+},500);
+</script>
+
+</body>
+</html>
